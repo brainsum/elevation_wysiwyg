@@ -1,0 +1,8 @@
+name: Elevation Wysiwyg
+type: module
+description: Custom modification for wysiwyg (ckeditor).
+core: 8.x
+package: Elevation
+dependencies:
+  - drupal:editor
+  - drupal:video_embed_field

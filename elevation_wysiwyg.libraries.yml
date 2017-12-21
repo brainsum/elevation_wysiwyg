@@ -1,0 +1,5 @@
+ckeditor_image_video:
+  version: VERSION
+  css:
+    theme:
+      css/wysiwyg_style.css: {}

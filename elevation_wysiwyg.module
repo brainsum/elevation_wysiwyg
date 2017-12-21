@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Code for Elevation_wysiwyg module.
+ */
+
+use Drupal\editor\Entity\Editor;
+
+/**
+ * Implements hook_ckeditor_plugin_info_alter().
+ */
+function elevation_wysiwyg_ckeditor_plugin_info_alter(array &$plugins) {
+  $plugins['elevation_image'] = [
+    'id' => 'elevation_image',
+    'label' => t('Elevation specific plugins'),
+    'module' => 'elevation_wysiwyg',
+    'class' => 'Drupal\elevation_wysiwyg\Plugin\CKEditorPlugin\ImagePopupPlugin',
+    'provider' => 'elevation_wysiwyg',
+  ];
+  $plugins['elevation_video'] = [
+    'id' => 'elevation_video',
+    'label' => t('Elevation specific plugins'),
+    'module' => 'elevation_wysiwyg',
+    'class' => 'Drupal\elevation_wysiwyg\Plugin\CKEditorPlugin\VideoPopupPlugin',
+    'provider' => 'elevation_wysiwyg',
+  ];
+}
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ */
+function elevation_wysiwyg_ckeditor_css_alter(array &$css, Editor $editor) {
+  $css[] = drupal_get_path('module', 'elevation_wysiwyg') . '/css/wysiwyg_style.css';
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function elevation_wysiwyg_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'elevation_wysiwyg/ckeditor_image_video';
+}
