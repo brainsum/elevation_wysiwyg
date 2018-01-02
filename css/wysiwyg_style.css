@@ -5,7 +5,9 @@
 }
 
 body.cke_editable.cke_editable_themed div.sbs-full-image img,
-div.sbs-full-image img {
+div.sbs-full-image img,
+body.cke_editable.cke_editable_themed div.sbs-full-image figure,
+div.sbs-full-image figure {
     margin: 0;
 }
 
