@@ -269,8 +269,8 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       // images will be inserted.
       $image_render = "<div>
         <div class=\"sbs-full-image\">
-          <img data-align='left' alt='" . $form_state->getValue(array('attributes_left', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . $absolute_path_left . "' width='220' />
-          <img data-align='right' alt='" . $form_state->getValue(array('attributes_right', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . $absolute_path_right . "' width='220' />
+          <img data-align='left' alt='" . $form_state->getValue(array('attributes_left', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . $absolute_path_left . "' width='300' />
+          <img data-align='right' alt='" . $form_state->getValue(array('attributes_right', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . $absolute_path_right . "' width='300' />
         </div></div>";
       $form_state->setValue('image_render', $image_render);
     }

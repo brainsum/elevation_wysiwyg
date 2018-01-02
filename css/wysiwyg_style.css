@@ -4,6 +4,11 @@
     display: block;
 }
 
+body.cke_editable.cke_editable_themed div.sbs-full-image img,
+div.sbs-full-image img {
+    margin: 0;
+}
+
 a > span.cke_button__doubleimage_icon {
     background-size: 30px auto !important;
     width: 30px;
