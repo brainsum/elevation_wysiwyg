@@ -6,3 +6,4 @@ package: Elevation
 dependencies:
   - drupal:editor
   - drupal:video_embed_field
+  - drupal:video_embed_wysiwyg
