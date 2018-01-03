@@ -4,6 +4,11 @@
     display: block;
 }
 
+.sbs-full-image .cke_widget_wrapper:hover .cke_image_resizer,
+.sbs-full-image .cke_image_resizer.cke_image_resizing {
+    display: none;
+}
+
 body.cke_editable.cke_editable_themed div.sbs-full-image img,
 div.sbs-full-image img,
 body.cke_editable.cke_editable_themed div.sbs-full-image figure,
