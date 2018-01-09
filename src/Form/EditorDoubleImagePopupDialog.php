@@ -4,6 +4,8 @@ namespace Drupal\elevation_wysiwyg\Form;
 
 use Drupal\Component\Utility\Bytes;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Image\Image;
+use Drupal\Core\ImageToolkit\Annotation\ImageToolkit;
 use Drupal\editor\Entity\Editor;
 use Drupal\editor\Form\EditorImageDialog;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -11,6 +13,7 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\editor\Ajax\EditorDialogSave;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\elevation_wysiwyg\Controller\ImagePopup;
+use Drupal\elevation_wysiwyg\Service\ImageHelper;
 
 /**
  * Provides an image dialog for text editors.
@@ -261,16 +264,22 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       if (trim($form_state->getValue(['attributes_right', 'alt'])) === '""') {
         $form_state->setValue(['attributes_right', 'alt'], '');
       }
+      $image_left = \Drupal::service('image.factory')->get($file_left->getFileUri());
+      $image_right = \Drupal::service('image.factory')->get($file_right->getFileUri());
 
       $display_image_right = ImagePopup::render($fid_right);
       $absolute_path_right = $display_image_right['#url_popup'];
+
+      /* @var \Drupal\elevation_wysiwyg\Service\ImageHelper $image_helper */
+      $image_helper = new ImageHelper($image_left->getWidth(), $image_left->getHeight(), $image_right->getWidth(), $image_right->getHeight());
+      $res = $image_helper->calculateEqHeight(630 - 10);
 
       // We need an outer container, or CKeditor will remove our div, and only
       // images will be inserted.
       $image_render = "<div>
         <div class=\"sbs-full-image\">
-          <img data-align='left' alt='" . $form_state->getValue(array('attributes_left', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . $absolute_path_left . "' width='310' />
-          <img data-align='right' alt='" . $form_state->getValue(array('attributes_right', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . $absolute_path_right . "' width='310' />
+          <img data-align='left' alt='" . $form_state->getValue(array('attributes_left', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . $absolute_path_left . "' width='" . $res['image1']['width'] . "' height='" . $res['image1']['height'] . "' />
+          <img data-align='right' alt='" . $form_state->getValue(array('attributes_right', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . $absolute_path_right . "' width='" . $res['image2']['width'] . "' height='" . $res['image2']['height'] . "' />
         </div></div>";
       $form_state->setValue('image_render', $image_render);
     }
