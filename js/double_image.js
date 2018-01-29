@@ -164,15 +164,19 @@
           var width2 = image2[0].naturalWidth;
           var height2 = image2[0].naturalHeight;
 
-          // Calculate the new values.
-          var imageHelper = new ImageHelper(width1, height1, width2, height2);
-          var res = imageHelper.calculateEqHeight(imagesMaxSize);
+          try {
+            // Calculate the new values.
+            var imageHelper = new ImageHelper(width1, height1, width2, height2);
+            var res = imageHelper.calculateEqHeight(imagesMaxSize);
 
-          // Write back the new values.
-          image1.width(res['image1']['width']);
-          image1.height(res['image1']['height']);
-          image2.width(res['image2']['width']);
-          image2.height(res['image2']['height']);
+            // Write back the new values.
+            image1.width(res['image1']['width']);
+            image1.height(res['image1']['height']);
+            image2.width(res['image2']['width']);
+            image2.height(res['image2']['height']);
+          } catch (error) {
+            console.error(error);
+          }
         }
       });
     }
