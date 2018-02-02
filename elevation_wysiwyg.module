@@ -46,7 +46,7 @@ function elevation_wysiwyg_page_attachments(array &$attachments) {
  */
 function elevation_wysiwyg_preprocess_page(&$variables) {
   /* @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
+  $node = $variables['node'] ?? NULL;
 
   if (is_object($node) && $node->hasField('field_side_block')) {
     $side_block = $node->get('field_side_block');
