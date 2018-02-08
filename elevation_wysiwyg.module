@@ -40,18 +40,3 @@ function elevation_wysiwyg_ckeditor_css_alter(array &$css, Editor $editor) {
 function elevation_wysiwyg_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'elevation_wysiwyg/ckeditor_image_video';
 }
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function elevation_wysiwyg_preprocess_page(&$variables) {
-  /* @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'] ?? NULL;
-
-  if (is_object($node) && $node->hasField('field_side_block')) {
-    $side_block = $node->get('field_side_block');
-    if (!empty($side_block) && $side_block->count() > 0) {
-      $variables['#attached']['library'][] = 'elevation_wysiwyg/double_image';
-    }
-  }
-}
