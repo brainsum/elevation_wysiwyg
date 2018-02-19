@@ -4,8 +4,6 @@ namespace Drupal\elevation_wysiwyg\Form;
 
 use Drupal\Component\Utility\Bytes;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Image\Image;
-use Drupal\Core\ImageToolkit\Annotation\ImageToolkit;
 use Drupal\editor\Entity\Editor;
 use Drupal\editor\Form\EditorImageDialog;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -67,26 +65,26 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
     $existing_file = isset($image_element['data-entity-uuid']) ? \Drupal::entityManager()->loadEntityByUuid('file', $image_element['data-entity-uuid']) : NULL;
     $fid = $existing_file ? $existing_file->id() : NULL;
 
-    $form['fid_left'] = array(
+    $form['fid_left'] = [
       '#title' => $this->t('Left Side Image'),
       '#type' => 'managed_file',
       '#upload_location' => $image_upload['scheme'] . '://' . $image_upload['directory'],
-      '#default_value' => $fid ? array($fid) : NULL,
-      '#upload_validators' => array(
-        'file_validate_extensions' => array('gif png jpg jpeg'),
-        'file_validate_size' => array($max_filesize),
-        'file_validate_image_resolution' => array($max_dimensions),
-      ),
+      '#default_value' => $fid ? [$fid] : NULL,
+      '#upload_validators' => [
+        'file_validate_extensions' => ['gif png jpg jpeg'],
+        'file_validate_size' => [$max_filesize],
+        'file_validate_image_resolution' => [$max_dimensions],
+      ],
       '#required' => TRUE,
-    );
+    ];
 
-    $form['attributes_left']['src'] = array(
+    $form['attributes_left']['src'] = [
       '#title' => $this->t('URL'),
       '#type' => 'textfield',
       '#default_value' => isset($image_element['src']) ? $image_element['src'] : '',
       '#maxlength' => 2048,
       '#required' => TRUE,
-    );
+    ];
 
     // If the editor has image uploads enabled, show a managed_file form item,
     // otherwise show a (file URL) text form item.
@@ -110,7 +108,7 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
     if ($alt === '' && !empty($image_element['src'])) {
       $alt = '""';
     }
-    $form['attributes_left']['alt'] = array(
+    $form['attributes_left']['alt'] = [
       '#title' => $this->t("Left Side Image's Alternative text"),
       '#placeholder' => $this->t('Short description for the visually impaired'),
       '#type' => 'textfield',
@@ -118,7 +116,7 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       '#required_error' => $this->t('Alternative text is required.<br />(Only in rare cases should this be left empty. To create empty alternative text, enter <code>""</code> — two double quotes without any content).'),
       '#default_value' => $alt,
       '#maxlength' => 2048,
-    );
+    ];
 
     // When Drupal core's filter_caption is being used, the text editor may
     // offer the ability to in-place edit the image's caption: show a toggle.
@@ -131,26 +129,26 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       ];
     }
 
-    $form['fid_right'] = array(
+    $form['fid_right'] = [
       '#title' => $this->t('Right Side Image'),
       '#type' => 'managed_file',
       '#upload_location' => $image_upload['scheme'] . '://' . $image_upload['directory'],
-      '#default_value' => $fid ? array($fid) : NULL,
-      '#upload_validators' => array(
-        'file_validate_extensions' => array('gif png jpg jpeg'),
-        'file_validate_size' => array($max_filesize),
-        'file_validate_image_resolution' => array($max_dimensions),
-      ),
+      '#default_value' => $fid ? [$fid] : NULL,
+      '#upload_validators' => [
+        'file_validate_extensions' => ['gif png jpg jpeg'],
+        'file_validate_size' => [$max_filesize],
+        'file_validate_image_resolution' => [$max_dimensions],
+      ],
       '#required' => TRUE,
-    );
+    ];
 
-    $form['attributes_right']['src'] = array(
+    $form['attributes_right']['src'] = [
       '#title' => $this->t('URL'),
       '#type' => 'textfield',
       '#default_value' => isset($image_element['src']) ? $image_element['src'] : '',
       '#maxlength' => 2048,
       '#required' => TRUE,
-    );
+    ];
 
     // If the editor has image uploads enabled, show a managed_file form item,
     // otherwise show a (file URL) text form item.
@@ -174,7 +172,7 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
     if ($alt === '' && !empty($image_element['src'])) {
       $alt = '""';
     }
-    $form['attributes_right']['alt'] = array(
+    $form['attributes_right']['alt'] = [
       '#title' => $this->t("Right Side Image's Alternative text"),
       '#placeholder' => $this->t('Short description for the visually impaired'),
       '#type' => 'textfield',
@@ -182,7 +180,7 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       '#required_error' => $this->t('Alternative text is required.<br />(Only in rare cases should this be left empty. To create empty alternative text, enter <code>""</code> — two double quotes without any content).'),
       '#default_value' => $alt,
       '#maxlength' => 2048,
-    );
+    ];
 
     // When Drupal core's filter_caption is being used, the text editor may
     // offer the ability to in-place edit the image's caption: show a toggle.
@@ -195,20 +193,20 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       ];
     }
 
-    $form['actions'] = array(
+    $form['actions'] = [
       '#type' => 'actions',
-    );
+    ];
 
-    $form['actions']['save_modal'] = array(
+    $form['actions']['save_modal'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save'),
       // No regular submit-handler. This form only works via JavaScript.
-      '#submit' => array(),
-      '#ajax' => array(
+      '#submit' => [],
+      '#ajax' => [
         'callback' => '::submitForm',
         'event' => 'click',
-      ),
-    );
+      ],
+    ];
 
     return $form;
   }
@@ -221,10 +219,10 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
 
     // Convert any uploaded files from the FID values to data-entity-uuid
     // attributes and set data-entity-type to 'file'.
-    $fid_left = $form_state->getValue(array('fid_left', 0));
-    $fid_right = $form_state->getValue(array('fid_right', 0));
+    $fid_left = $form_state->getValue(['fid_left', 0]);
+    $fid_right = $form_state->getValue(['fid_right', 0]);
     if (!empty($fid_left) && !empty($fid_right)) {
-      /** LEFT IMAGE **/
+      // LEFT IMAGE.
       $file_left = $this->fileStorage->load($fid_left);
       $file_url_left = file_create_url($file_left->getFileUri());
       // Transform absolute image URLs to relative image URLs: prevent problems
@@ -238,7 +236,8 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       $form_state->setValue(['attributes_left', 'data-entity-type'], 'file');
 
       // When the alt attribute is set to two double quotes, transform it to the
-      // empty string: two double quotes signify "empty alt attribute". See above.
+      // empty string: two double quotes signify "empty alt attribute". See
+      // above.
       if (trim($form_state->getValue(['attributes_left', 'alt'])) === '""') {
         $form_state->setValue(['attributes_left', 'alt'], '');
       }
@@ -246,7 +245,7 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       $display_image_left = ImagePopup::render($fid_left);
       $absolute_path_left = $display_image_left['#url_popup'];
 
-      /** RIGHT IMAGE **/
+      // RIGHT IMAGE.
       $file_right = $this->fileStorage->load($fid_right);
       $file_url_right = file_create_url($file_right->getFileUri());
       // Transform absolute image URLs to relative image URLs: prevent problems
@@ -260,7 +259,8 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       $form_state->setValue(['attributes_right', 'data-entity-type'], 'file');
 
       // When the alt attribute is set to two double quotes, transform it to the
-      // empty string: two double quotes signify "empty alt attribute". See above.
+      // empty string: two double quotes signify "empty alt attribute". See
+      // above.
       if (trim($form_state->getValue(['attributes_right', 'alt'])) === '""') {
         $form_state->setValue(['attributes_right', 'alt'], '');
       }
@@ -278,8 +278,8 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       // images will be inserted.
       $image_render = "<div>
         <div class=\"sbs-full-image\">
-          <img data-align='left' alt='" . $form_state->getValue(array('attributes_left', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . $absolute_path_left . "' width='" . $res['image1']['width'] . "' height='" . $res['image1']['height'] . "' />
-          <img data-align='right' alt='" . $form_state->getValue(array('attributes_right', 'alt')) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . $absolute_path_right . "' width='" . $res['image2']['width'] . "' height='" . $res['image2']['height'] . "' />
+          <img data-align='left' alt='" . $form_state->getValue(['attributes_left', 'alt']) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . $absolute_path_left . "' width='" . $res['image1']['width'] . "' height='" . $res['image1']['height'] . "' />
+          <img data-align='right' alt='" . $form_state->getValue(['attributes_right', 'alt']) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . $absolute_path_right . "' width='" . $res['image2']['width'] . "' height='" . $res['image2']['height'] . "' />
         </div></div>";
       $form_state->setValue('image_render', $image_render);
     }
