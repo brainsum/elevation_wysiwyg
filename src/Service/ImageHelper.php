@@ -100,23 +100,15 @@ class ImageHelper {
     }
 
     // Determinate which image is the smaller and which is the bigger.
-    $originalSmallerH = $this->image2['height'];
-    $originalSmallerW = $this->image2['width'];
     $originalSmallerAW = $this->ratio2W;
-    $originalSmallerAH = $this->ratio2H;
     $originalBiggerH = $this->image1['height'];
     $originalBiggerW = $this->image1['width'];
     $originalBiggerAW = $this->ratio1W;
-    $originalBiggerAH = $this->ratio1H;
     if ($this->image1['height'] <= $this->image2['height']) {
-      $originalSmallerH = $this->image1['height'];
-      $originalSmallerW = $this->image1['width'];
       $originalSmallerAW = $this->ratio1W;
-      $originalSmallerAH = $this->ratio1H;
       $originalBiggerH = $this->image2['height'];
       $originalBiggerW = $this->image2['width'];
       $originalBiggerAW = $this->ratio2W;
-      $originalBiggerAH = $this->ratio2H;
     }
 
     // Scale up the smaller to the bigger's height.

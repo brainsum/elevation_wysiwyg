@@ -28,9 +28,9 @@ class VideoPopupPlugin extends VideoEmbedWysiwyg implements CKEditorPluginConfig
    * {@inheritdoc}
    */
   public function getLibraries(Editor $editor) {
-    return array(
+    return [
       'core/drupal.ajax',
-    );
+    ];
   }
 
   /**

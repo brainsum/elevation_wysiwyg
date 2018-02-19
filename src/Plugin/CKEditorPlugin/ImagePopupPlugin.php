@@ -37,9 +37,9 @@ class ImagePopupPlugin extends CKEditorPluginBase implements CKEditorPluginInter
    * {@inheritdoc}
    */
   public function getLibraries(Editor $editor) {
-    return array(
+    return [
       'core/drupal.ajax',
-    );
+    ];
   }
 
   /**
@@ -98,10 +98,10 @@ class ImagePopupPlugin extends CKEditorPluginBase implements CKEditorPluginInter
    */
   public function getButtons() {
     return [
-      'DoubleImage' => array(
+      'DoubleImage' => [
         'label' => t('Double Image Popup'),
         'image' => drupal_get_path('module', 'elevation_wysiwyg') . '/js/plugins/elevation_image/icons/DoubleImage.png',
-      ),
+      ],
     ];
   }
 

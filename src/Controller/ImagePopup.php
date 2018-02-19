@@ -26,7 +26,7 @@ class ImagePopup extends ControllerBase {
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
-  public function render($fid, $image_style = NULL) {
+  public static function render($fid, $image_style = NULL) {
     /* @var \Drupal\file\Entity\File $file */
     $file = \Drupal::entityTypeManager()->getStorage('file')->load($fid);
 
