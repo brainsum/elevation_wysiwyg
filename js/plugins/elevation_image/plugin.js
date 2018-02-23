@@ -69,25 +69,17 @@
           return function (dialogReturnValues) {
             var actualWidget = saveCallback(dialogReturnValues);
 
-            var dataAlign = widget.data.align;
+            var dataAlign = actualWidget.data.align;
             if (typeof dataAlign !== "undefined" && dataAlign === "center") {
-              widget.data.width = "630";
-              delete widget.data.height;
-              widget.element.$.width = "630";
-              delete widget.element.$.height;
-              if (typeof widget.element.$.childNodes[0] !== "undefined" && typeof widget.element.$.childNodes[0].childNodes[0] !== "undefined") {
-                widget.element.$.childNodes[0].childNodes[0].width = "630";
-              }
+              actualWidget.setData('width', 630);
+              actualWidget.setData('height', undefined);
             }
             else if (typeof dataAlign !== "undefined" && (dataAlign === "left" || dataAlign === "right")) {
-              widget.data.width = "250";
-              delete widget.data.height;
-              widget.element.$.width = "250";
-              delete widget.element.$.height;
-              if (typeof widget.element.$.childNodes[0] !== "undefined" && typeof widget.element.$.childNodes[0].childNodes[0] !== "undefined") {
-                widget.element.$.childNodes[0].childNodes[0].width = "250";
-              }
+              actualWidget.setData('width', 250);
+              actualWidget.setData('height', undefined);
             }
+
+            return actualWidget;
           };
         };
 
