@@ -149,8 +149,11 @@
 
   Drupal.behaviors.elevation_wysiwyg = {
     attach: function (context, settings) {
+      var mainItem = $('.node__main');
       // Max size of the two images.
-      var imagesMaxSize = $('.node__main')[0].getBoundingClientRect().width - 10;
+      var imagesMaxSize = mainItem[0].getBoundingClientRect().width - 10 -
+        parseFloat(mainItem.css('paddingLeft').replace('px', '')) -
+        parseFloat(mainItem.css('paddingRight').replace('px', ''));
 
       $('.sbs-full-image').each(function (index, current) {
         var images = $(current).find("> img");
