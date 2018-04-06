@@ -62,29 +62,53 @@
         };
 
         // Override Drupal dialog save callback.
-        var originalCreateDialogSaveCallback = widgetDefinition._createDialogSaveCallback;
         widgetDefinition._createDialogSaveCallback = function (editor, widget) {
-          var saveCallback = originalCreateDialogSaveCallback.call(this, editor, widget);
-
           return function (dialogReturnValues) {
-            var actualWidget = saveCallback(dialogReturnValues);
+            var firstEdit = !widget.ready;
 
-            var dataAlign = actualWidget.data.align;
-            if (typeof dataAlign !== "undefined" && dataAlign === "center") {
-              actualWidget.setData('width', 630);
-              actualWidget.setData('height', undefined);
+            if (!firstEdit) {
+              widget.focus();
             }
-            else if (typeof dataAlign !== "undefined" && (dataAlign === "left" || dataAlign === "right")) {
-              actualWidget.setData('width', 250);
-              actualWidget.setData('height', undefined);
+            
+            editor.fire('saveSnapshot');
+
+            var container = widget.wrapper.getParent(true);
+            var image = widget.parts.image;
+            var data = widgetDefinition._dialogValuesToData(dialogReturnValues.attributes);
+
+            if(typeof data.align !== 'undefined') {
+              switch (data.align) {
+                case 'center':
+                  data.width = 630;
+                  break;
+
+                case 'left':
+                case 'right':
+                  data.width = 250;
+                  break;
+              
+                default:
+                  break;
+              }
             }
 
-            return actualWidget;
+            widget.setData(data);
+
+            widget = editor.widgets.getByElement(image);
+
+            if (firstEdit) {
+              editor.widgets.finalizeCreation(container);
+            }
+
+            setTimeout(function () {
+              widget.focus();
+              editor.fire('saveSnapshot');
+            });
+
+            return widget;
           };
         };
-
-        // Low priority to ensure drupalimage's event handler runs first.
-      }, null, null, 30);
+      });
 
       setTimeout(function () {
         // Register the "editdrupalimage" command, which essentially just replaces
