@@ -27,40 +27,6 @@
           return;
         }
 
-        widgetDefinition.allowedContent.img.attributes['!width'] = true;
-        widgetDefinition.allowedContent.img.attributes['!height'] = true;
-
-        // Override downcast(): ensure we *only* output <img>, but also ensure
-        // we include the data-entity-type, data-entity-uuid, data-align and
-        // data-caption attributes.
-        var originalDowncast = widgetDefinition.downcast;
-        widgetDefinition.downcast = function (element) {
-          var img = findElementByName(element, 'img');
-          originalDowncast.call(this, img);
-          return img;
-        };
-
-        // We want to upcast <img> elements to a DOM structure required by the
-        // image2 widget. Depending on a case it may be:
-        //   - just an <img> tag (non-captioned, not-centered image),
-        //   - <img> tag in a paragraph (non-captioned, centered image),
-        //   - <figure> tag (captioned image).
-        // We take the same attributes into account as downcast() does.
-        var originalUpcast = widgetDefinition.upcast;
-        widgetDefinition.upcast = function (element, data) {
-          if (element.name !== 'img' || !element.attributes['data-entity-type'] || !element.attributes['data-entity-uuid']) {
-            return;
-          }
-          // Don't initialize on pasted fake objects.
-          else if (element.attributes['data-cke-realelement']) {
-            return;
-          }
-
-          element = originalUpcast.call(this, element, data);
-
-          return element;
-        };
-
         // Override Drupal dialog save callback.
         var originalCreateDialogSaveCallback = widgetDefinition._createDialogSaveCallback;
         widgetDefinition._createDialogSaveCallback = function (editor, widget) {
