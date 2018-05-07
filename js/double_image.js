@@ -150,38 +150,41 @@
   Drupal.behaviors.elevation_wysiwyg = {
     attach: function (context, settings) {
       var mainItem = $('.node__main');
-      // Max size of the two images.
-      var imagesMaxSize = mainItem[0].getBoundingClientRect().width - 10 -
-        parseFloat(mainItem.css('paddingLeft').replace('px', '')) -
-        parseFloat(mainItem.css('paddingRight').replace('px', ''));
 
-      $('.sbs-full-image').each(function (index, current) {
-        var images = $(current).find("> img");
-        if (images.length === 2) {
-          // Cache elements.
-          var image1 = $(current).find('> img:eq(0)');
-          var image2 = $(current).find('> img:eq(1)');
-          // Read out data.
-          var width1 = image1[0].naturalWidth;
-          var height1 = image1[0].naturalHeight;
-          var width2 = image2[0].naturalWidth;
-          var height2 = image2[0].naturalHeight;
+      if (mainItem.length > 0) {
+        // Max size of the two images.
+        var imagesMaxSize = mainItem[0].getBoundingClientRect().width - 10 -
+          parseFloat(mainItem.css('paddingLeft').replace('px', '')) -
+          parseFloat(mainItem.css('paddingRight').replace('px', ''));
 
-          try {
-            // Calculate the new values.
-            var imageHelper = new ImageHelper(width1, height1, width2, height2);
-            var res = imageHelper.calculateEqHeight(imagesMaxSize);
+        $('.sbs-full-image').each(function (index, current) {
+          var images = $(current).find("> img");
+          if (images.length === 2) {
+            // Cache elements.
+            var image1 = $(current).find('> img:eq(0)');
+            var image2 = $(current).find('> img:eq(1)');
+            // Read out data.
+            var width1 = image1[0].naturalWidth;
+            var height1 = image1[0].naturalHeight;
+            var width2 = image2[0].naturalWidth;
+            var height2 = image2[0].naturalHeight;
 
-            // Write back the new values.
-            image1.width(res['image1']['width']);
-            image1.height(res['image1']['height']);
-            image2.width(res['image2']['width']);
-            image2.height(res['image2']['height']);
-          } catch (error) {
-            console.error(error);
+            try {
+              // Calculate the new values.
+              var imageHelper = new ImageHelper(width1, height1, width2, height2);
+              var res = imageHelper.calculateEqHeight(imagesMaxSize);
+
+              // Write back the new values.
+              image1.width(res['image1']['width']);
+              image1.height(res['image1']['height']);
+              image2.width(res['image2']['width']);
+              image2.height(res['image2']['height']);
+            } catch (error) {
+              console.error(error);
+            }
           }
-        }
-      });
+        });
+      }
     }
   };
 
