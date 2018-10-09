@@ -278,8 +278,8 @@ class EditorDoubleImagePopupDialog extends EditorImageDialog {
       // images will be inserted.
       $image_render = "<div>
         <div class=\"sbs-full-image\">
-          <img data-align='left' alt='" . $form_state->getValue(['attributes_left', 'alt']) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . $absolute_path_left . "' width='" . $res['image1']['width'] . "' height='" . $res['image1']['height'] . "' />
-          <img data-align='right' alt='" . $form_state->getValue(['attributes_right', 'alt']) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . $absolute_path_right . "' width='" . $res['image2']['width'] . "' height='" . $res['image2']['height'] . "' />
+          <img data-align='left' alt='" . $form_state->getValue(['attributes_left', 'alt']) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_left->uuid() . "' src='" . parse_url($absolute_path_left, PHP_URL_PATH) . "' width='" . $res['image1']['width'] . "' height='" . $res['image1']['height'] . "' />
+          <img data-align='right' alt='" . $form_state->getValue(['attributes_right', 'alt']) . "' data-entity-type=\"file\" data-entity-uuid='" . $file_right->uuid() . "' src='" . parse_url($absolute_path_right, PHP_URL_PATH) . "' width='" . $res['image2']['width'] . "' height='" . $res['image2']['height'] . "' />
         </div></div>";
       $form_state->setValue('image_render', $image_render);
     }
